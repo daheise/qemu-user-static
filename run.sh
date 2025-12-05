@@ -28,7 +28,7 @@ shift $((OPTIND-1))
 from_arch="x86_64"
 root_dir=$(pwd)
 out_dir="containers"
-releases_dir="releases/usr/bin/"
+releases_dir="${root_dir}/releases/usr/bin/"
 
 cd ${releases_dir}
 for file in *; do

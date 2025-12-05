@@ -7,6 +7,13 @@ on:
       - containers/**
       - .github/workflows/actions.yml
       - "*.sh"
+  workflow_dispatch:
+    branches:
+      - master
+    paths:
+      - containers/**
+      - .github/workflows/actions.yml
+      - "*.sh"
   pull_request:
     branches:
       - master

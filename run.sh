@@ -45,7 +45,7 @@ sed -i '/^COPY qemu/ s/^/#/' "${out_dir}/register/Dockerfile"
 
 for file in ${releases_dir}*
 do
-    if [[ $file =~ qemu-(.+[^.gz])$ ]]; then
+    if [[ $(basename "$file") =~ qemu-(.+[^.gz])$ ]]; then
         to_arch=${BASH_REMATCH[1]}
         if [ "$from_arch" != "$to_arch" ]; then
             work_dir="${out_dir}/${from_arch}_qemu-${to_arch}"

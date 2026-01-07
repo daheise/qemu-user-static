@@ -43,6 +43,7 @@ cp -p "${out_dir}/latest/Dockerfile" "${out_dir}/register/"
 # Comment out the line to copy qemu-*-static not to provide those.
 sed -i '/^COPY qemu/ s/^/#/' "${out_dir}/register/Dockerfile"
 
+ls -l ${releases_dir}
 for file in ${releases_dir}*
 do
     if [[ $(basename "$file") =~ qemu-(.+[^.gz])$ ]]; then

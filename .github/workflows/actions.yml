@@ -39,7 +39,7 @@ jobs:
           #wget --content-disposition http://ftp.de.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
           #dpkg-deb -R qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb qemu-user-static
           mkdir -p releases/usr/bin
-          for f in qemu_user/usr/bin/qemu-*; do cp "$f" "releases/usr/bin/$(basename "$f")-static"; done
+          for f in qemu-user/usr/bin/qemu-*; do cp "$f" "releases/usr/bin/$(basename "$f")-static"; done
           mv qemu-user/usr/bin/* releases/usr/bin
           mv qemu-user-static/usr/bin/* releases/usr/bin
           ./run.sh -t "${{ env.VERSION }}" -r "${{ env.GITHUB_REPOSITORY }}" -d "${{ env.DOCKER_REPO }}"

@@ -25,8 +25,8 @@ jobs:
   qemu-user-static:
     runs-on: ubuntu-latest
     env:
-      VERSION: 7.2-7
-      ORIGIN_VERSION: 7.2+dfsg-7+deb12u18
+      VERSION: 10.0.6
+      ORIGIN_VERSION: 10.0.6+ds-0+deb13u2
     steps:
       - uses: actions/checkout@v2
       - name: Set variables
@@ -34,8 +34,13 @@ jobs:
           echo "DOCKER_REPO=docker.io/$GITHUB_REPOSITORY" >> $GITHUB_ENV
       - name: Build
         run: |
+          wget --content-disposition http://ftp.de.debian.org/debian/pool/main/q/qemu/qemu-user_${{ env.ORIGIN_VERSION }}_amd64.deb
           wget --content-disposition http://ftp.de.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb
-          dpkg-deb -R qemu-user-static_*.deb releases
+          dpkg-deb -R qemu-user_${{ env.ORIGIN_VERSION }}_amd64.deb qemu-user
+          dpkg-deb -R qemu-user-static_${{ env.ORIGIN_VERSION }}_amd64.deb qemu-user-static
+          mkdir -p releases/usr/bin
+          mv qemu-user/usr/bin/* releases/usr/bin
+          mv qemu-user-static/usr/bin/* releases/usr/bin
           ./run.sh -t "${{ env.VERSION }}" -r "${{ env.GITHUB_REPOSITORY }}" -d "${{ env.DOCKER_REPO }}"
       - name: Test
         run: ./test.sh -d "${{ env.DOCKER_REPO }}"

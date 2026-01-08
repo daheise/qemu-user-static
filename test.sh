@@ -41,12 +41,10 @@ EOF
 docker pull --platform linux/aarch64 fedora
 docker run --platform linux/aarch64 --rm -t fedora uname -m
 # It should install a package.
-# TODO: Comment out as it takes a time.
-# docker build --rm -t "test/latest/fedora" -<<EOF
-# FROM arm64v8/fedora
-# RUN dnf -y upgrade && \
-#     dnf -y install gcc
-# EOF
+docker build --platform linux/aarch64 --rm -t "test/latest/fedora" -<<EOF
+FROM fedora
+RUN dnf -y install gcc
+EOF
 
 # ------------------------------------------------
 # multiarch/qemu-user-static:register image
@@ -67,8 +65,8 @@ docker run --rm -t ${DOCKER_REPO}:x86_64-aarch64 /usr/bin/qemu-aarch64-static --
 
 # ------------------------------------------------
 # Integration test
-docker build --platform linux/aarch64 --rm -t "test/integration/ubuntu" -<<EOF
-FROM ${DOCKER_REPO}:x86_64-aarch64 as qemu
+docker build --rm -t "test/integration/ubuntu" -<<EOF
+FROM ${DOCKER_REPO}:x86_64-aarch64 AS qemu
 FROM ubuntu
 COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
 EOF
